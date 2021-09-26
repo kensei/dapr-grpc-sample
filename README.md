@@ -13,3 +13,17 @@ cd shared
 dotnet ef migrations add CreateUser --startup-project ../api/
 dotnet ef database update --startup-project ../api/
 ```
+
+## useage
+
+* user create
+
+```
+curl http://localhost:5000 -X POST -H "Content-Type: application/json" -d '{"name":"hoge"}'
+```
+
+* user get
+
+```
+curl http://localhost:5000/api/users/1
+```
