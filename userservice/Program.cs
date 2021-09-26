@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace DaprSample.Api
+namespace DaprSample.MicroService.UsersService
 {
     public class Program
     {
@@ -21,7 +21,7 @@ namespace DaprSample.Api
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.UseUrls("http://0.0.0.0:5000");
+                    webBuilder.UseUrls("http://0.0.0.0:5001");
                 });
     }
 }

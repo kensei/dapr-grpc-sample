@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using DaprSample.Api.Datas.Dto;
-using DaprSample.Api.Datas.Enums;
+using DaprSample.MicroService.UsersService.Datas.Dto;
+using DaprSample.MicroService.UsersService.Datas.Enums;
 
-namespace DaprSample.Api.Helpers
+namespace DaprSample.MicroService.UsersService.Helpers
 {
     public class ResponseHelper
     {

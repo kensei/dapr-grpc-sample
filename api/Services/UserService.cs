@@ -1,101 +1,80 @@
-using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using MySql.Data.MySqlClient;
-using Dapper;
-using DaprSample.Shared.Models;
-using DaprSample.Api.Configs.Exceptions;
-using StackExchange.Redis;
-using Dapr.Client;
+using Newtonsoft.Json;
 using DaprSample.Api.Datas.Dto;
+using DaprSample.Api.Configs.Exceptions;
+using DaprSample.Shared.Models;
+
 
 namespace DaprSample.Api.Services
 {
     public class UserService
     {
-        private readonly IConfiguration _configuration;
-        private IDatabase _database;
-        private DaprClient _daprClient;
+        private HttpClient _httpClient;
 
-        public UserService(IConfiguration configuration, IDatabase database, DaprClient daprClient) 
+        public UserService(HttpClient httpClient) 
         {
-            _configuration = configuration;
-            _database = database;
-            _daprClient = daprClient;
+            _httpClient = httpClient;
         }
  
         // Userレコードを1件取得
         public async Task<User> GetUserById(long id)
         {
-            using var mysqlConnection = new MySqlConnection(_configuration.GetConnectionString("UserContext"));
-            await mysqlConnection.OpenAsync();
- 
-            var query = "SELECT * FROM Users WHERE Id = @Id";
-            var param = new { Id = id };
-            var result = await mysqlConnection.QueryAsync<User>(query, param);
-            var user = result.FirstOrDefault();
- 
-            if (user == null)
+            var response = await _httpClient.GetAsync("/api/users/" + id);
+            if(response.IsSuccessStatusCode)
             {
-              throw new ResourceNotFoundException($"User:Id={id} is not found");
+                var jsonString = await response.Content.ReadAsStringAsync();
+                System.Console.WriteLine("result:" + jsonString);
+                try {
+                    var userResponse = JsonConvert.DeserializeObject<CommonResponse<User>>(jsonString);
+                    System.Console.WriteLine("errorcode:" + userResponse.ErrorCode);
+                    System.Console.WriteLine("id:" + userResponse.Data.Id);
+                    System.Console.WriteLine("name:" + userResponse.Data.Name);
+                    return userResponse.Data;
+                } catch (JsonException e) {
+                    try {
+                        var errorResponse = JsonConvert.DeserializeObject<CommonResponse<string>>(jsonString);
+                        throw new ServiceCallFailException(errorResponse.Data);
+                    } catch (JsonException) {
+                        throw new ServiceCallFailException(e.Message);
+                    }
+                }
             }
- 
-            return user;
+            else
+            {
+                throw new ServiceCallFailException();
+            }
         }
  
         // Userレコードを1件作成
         public async Task<User> AddUser(User user)
         {
-            using var mysqlConnection = new MySqlConnection(_configuration.GetConnectionString("UserContext"));
-            await mysqlConnection.OpenAsync();
- 
-            using var transaction = await mysqlConnection.BeginTransactionAsync();
-
-            try
+            var response = await _httpClient.GetAsync("/api/users/" + user.Id);
+            if(response.IsSuccessStatusCode)
             {
-                var id = mysqlConnection.QuerySingleAsync<long>(
-                    @"INSERT INTO Users (Name) VALUES (@Name);
-                    SELECT last_insert_id()", user
-                );
-
-                await transaction.CommitAsync();
-
-                user.Id = id.Result;
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var userResponse = JsonConvert.DeserializeObject<CommonResponse<User>>(jsonString);
+                return userResponse.Data;
             }
-            catch (MySqlException e)
+            else
             {
-                await transaction.RollbackAsync();
-                throw e;
+                throw new ServiceCallFailException();
             }
- 
-            return user;
         }
 
         public async Task<UserResponse> Login(User user)
         {
-            using var mysqlConnection = new MySqlConnection(_configuration.GetConnectionString("UserContext"));
-            await mysqlConnection.OpenAsync();
-            using var transaction = await mysqlConnection.BeginTransactionAsync();
-            var res = new UserResponse();
-            try
+            var response = await _httpClient.GetAsync("/api/users/" + user.Id);
+            if(response.IsSuccessStatusCode)
             {
-                var getUser = await GetUserById(user.Id);
-
-                var storeName = "statestore";
-                var key = "user-" + getUser.Id;
-                var counter = await _daprClient.GetStateAsync<long>(storeName, key);
-                counter++;
-                await _daprClient.SaveStateAsync(storeName, key, counter);
-
-                res.LoginCounter = await _daprClient.GetStateAsync<long>(storeName, key);
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var userResponse = JsonConvert.DeserializeObject<CommonResponse<UserResponse>>(jsonString);
+                return userResponse.Data;
             }
-            catch (MySqlException e)
+            else
             {
-                await transaction.RollbackAsync();
-                throw e;
+                throw new ServiceCallFailException();
             }
- 
-            return res;
         }
     }
 }

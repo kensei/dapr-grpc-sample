@@ -1,4 +1,4 @@
-namespace DaprSample.Api.Datas.Dto
+namespace DaprSample.MicroService.UsersService.Datas.Dto
 {
     public class CommonResponse<T>
     {

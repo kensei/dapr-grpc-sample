@@ -1,4 +1,4 @@
-namespace DaprSample.Api.Datas.Enums
+namespace DaprSample.MicroService.UsersService.Datas.Enums
 {
     public enum EnumResponseStatus {
         Success = 0,

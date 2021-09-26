@@ -21,6 +21,17 @@ services:
     volumes:
       - "./dapr-components/:/components"
     network_mode: "service:dotnet-app"
+  
+  userservice-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+     "-app-id", "userservice",
+     "-app-port", "5001",
+     "-placement-host-address", "placement:50010",
+     "-components-path", "/components"]
+    volumes:
+      - "./dapr-components/:/components"
+    network_mode: "service:dotnet-app"
 
   placement:
     image: "daprio/dapr"

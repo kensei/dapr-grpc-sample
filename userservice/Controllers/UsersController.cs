@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
-using DaprSample.Api.Services;
 using System.Threading.Tasks;
-using System;
-using DaprSample.Api.Helpers;
-using DaprSample.Api.Datas.Enums;
-using DaprSample.Api.Configs.Exceptions;
-using DaprSample.Api.Datas.Dto;
 using DaprSample.Shared.Models;
+using System;
+using DaprSample.MicroService.UsersService.Helpers;
+using DaprSample.MicroService.UsersService.Datas.Enums;
+using DaprSample.MicroService.UsersService.Configs.Exceptions;
+using DaprSample.MicroService.UsersService.Datas.Dto;
+using DaprSample.MicroService.UsersService.Services;
 
-namespace DaprSample.Api.Controllers
+namespace DaprSample.MicroService.UsersService.Controllers
 {
     [Route("api/users")]
     [ApiController]
