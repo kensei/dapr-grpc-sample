@@ -6,6 +6,29 @@ services:
       dockerfile: Dockerfile
       args:
         VARIANT: "5.0"
+    depends_on:
+      - redis
+    networks:
+      - dapr-sample
+  
+  api-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+     "-app-id", "api",
+     "-app-port", "5000",
+     "-placement-host-address", "placement:50010",
+     "-components-path", "/components"]
+    volumes:
+      - "./dapr-components/:/components"
+    network_mode: "service:dotnet-app"
+
+  placement:
+    image: "daprio/dapr"
+    command: ["./placement", "-port", "50010"]
+    ports:
+      - "50010:50010"
+    networks:
+      - dapr-sample
 
   mysql:
     image: mysql:8.0
@@ -22,6 +45,8 @@ services:
       - TZ=Asia/Tokyo
     ports:
       - 3306:3306
+    networks:
+      - dapr-sample
 
   redis:
     image: redis:latest
@@ -30,6 +55,10 @@ services:
     ports:
       - 6379:6379
     command: ["redis-server"]
+    networks:
+      - dapr-sample
 
 volumes:
   db-store:
+networks:
+    dapr-sample:

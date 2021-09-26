@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
 
 namespace api
 {
@@ -40,7 +41,16 @@ namespace api
                     .EnableSensitiveDataLogging()
                     .EnableDetailedErrors() // remove for production
                 );
-            services.AddControllers();
+            var redisHost = Configuration.GetSection("RedisSettings").GetValue<string>("RedisHost");
+            var config = new ConfigurationOptions()
+            {
+                EndPoints = { redisHost },
+                KeepAlive = 180,
+                ReconnectRetryPolicy = new ExponentialRetry(5000)
+            };
+            var redisDadabase = ConnectionMultiplexer.Connect(config).GetDatabase();
+            services.AddSingleton<IDatabase>(redisDadabase);
+            services.AddControllers().AddDapr();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "api", Version = "v1" });

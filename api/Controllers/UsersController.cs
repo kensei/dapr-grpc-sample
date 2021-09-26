@@ -6,6 +6,7 @@ using DaprSample.Api.Datas.Enums;
 using DaprSample.Shared.Models;
 using System;
 using DaprSample.Api.Configs.Exceptions;
+using DaprSample.Api.Datas.Dto;
 
 namespace DaprSample.Api.Controllers
 {
@@ -50,6 +51,26 @@ namespace DaprSample.Api.Controllers
             catch(Exception e) 
             {
                 Console.WriteLine(e.Message);
+                return ResponseHelper.GenerateResponse<string>(e.Message, EnumResponseStatus.Fail);
+            }
+        }
+
+        [Route("login")]
+        public async Task<JsonResult> Login(User user)
+        {
+            try
+            {
+                var loginUser = await _service.Login(user);
+                return ResponseHelper.GenerateResponse<UserResponse>(loginUser, EnumResponseStatus.Success);
+            }
+            catch(ResourceNotFoundException e)
+            {
+                return ResponseHelper.GenerateResponse<string>(e.Message, EnumResponseStatus.NotFound);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException.Message);
                 return ResponseHelper.GenerateResponse<string>(e.Message, EnumResponseStatus.Fail);
             }
         }

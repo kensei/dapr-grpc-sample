@@ -5,16 +5,23 @@ using MySql.Data.MySqlClient;
 using Dapper;
 using DaprSample.Shared.Models;
 using DaprSample.Api.Configs.Exceptions;
+using StackExchange.Redis;
+using Dapr.Client;
+using DaprSample.Api.Datas.Dto;
 
 namespace DaprSample.Api.Services
 {
     public class UserService
     {
         private readonly IConfiguration _configuration;
- 
-        public UserService(IConfiguration configuration) 
+        private IDatabase _database;
+        private DaprClient _daprClient;
+
+        public UserService(IConfiguration configuration, IDatabase database, DaprClient daprClient) 
         {
             _configuration = configuration;
+            _database = database;
+            _daprClient = daprClient;
         }
  
         // Userレコードを1件取得
@@ -62,6 +69,33 @@ namespace DaprSample.Api.Services
             }
  
             return user;
+        }
+
+        public async Task<UserResponse> Login(User user)
+        {
+            using var mysqlConnection = new MySqlConnection(_configuration.GetConnectionString("UserContext"));
+            await mysqlConnection.OpenAsync();
+            using var transaction = await mysqlConnection.BeginTransactionAsync();
+            var res = new UserResponse();
+            try
+            {
+                var getUser = await GetUserById(user.Id);
+
+                var storeName = "statestore";
+                var key = "user-" + getUser.Id;
+                var counter = await _daprClient.GetStateAsync<long>(storeName, key);
+                counter++;
+                await _daprClient.SaveStateAsync(storeName, key, counter);
+
+                res.LoginCounter = await _daprClient.GetStateAsync<long>(storeName, key);
+            }
+            catch (MySqlException e)
+            {
+                await transaction.RollbackAsync();
+                throw e;
+            }
+ 
+            return res;
         }
     }
 }
