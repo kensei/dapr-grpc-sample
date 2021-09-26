@@ -4,7 +4,8 @@ using Newtonsoft.Json;
 using DaprSample.Api.Datas.Dto;
 using DaprSample.Api.Configs.Exceptions;
 using DaprSample.Shared.Models;
-
+using DaprSample.Api.Helpers;
+using System.Text;
 
 namespace DaprSample.Api.Services
 {
@@ -24,21 +25,8 @@ namespace DaprSample.Api.Services
             if(response.IsSuccessStatusCode)
             {
                 var jsonString = await response.Content.ReadAsStringAsync();
-                System.Console.WriteLine("result:" + jsonString);
-                try {
-                    var userResponse = JsonConvert.DeserializeObject<CommonResponse<User>>(jsonString);
-                    System.Console.WriteLine("errorcode:" + userResponse.ErrorCode);
-                    System.Console.WriteLine("id:" + userResponse.Data.Id);
-                    System.Console.WriteLine("name:" + userResponse.Data.Name);
-                    return userResponse.Data;
-                } catch (JsonException e) {
-                    try {
-                        var errorResponse = JsonConvert.DeserializeObject<CommonResponse<string>>(jsonString);
-                        throw new ServiceCallFailException(errorResponse.Data);
-                    } catch (JsonException) {
-                        throw new ServiceCallFailException(e.Message);
-                    }
-                }
+                var deserializedResponse = ServiceResponseHelper.DeserializeObject<User>(jsonString);
+                return deserializedResponse.Data;
             }
             else
             {
@@ -49,12 +37,14 @@ namespace DaprSample.Api.Services
         // Userレコードを1件作成
         public async Task<User> AddUser(User user)
         {
-            var response = await _httpClient.GetAsync("/api/users/" + user.Id);
+            var paramJson = JsonConvert.SerializeObject(user);
+            var paramContent = new StringContent(paramJson, Encoding.UTF8, @"application/json");
+            var response = await _httpClient.PostAsync("/api/users/", paramContent);
             if(response.IsSuccessStatusCode)
             {
                 var jsonString = await response.Content.ReadAsStringAsync();
-                var userResponse = JsonConvert.DeserializeObject<CommonResponse<User>>(jsonString);
-                return userResponse.Data;
+                var deserializedResponse = ServiceResponseHelper.DeserializeObject<User>(jsonString);
+                return deserializedResponse.Data;
             }
             else
             {
@@ -64,12 +54,14 @@ namespace DaprSample.Api.Services
 
         public async Task<UserResponse> Login(User user)
         {
-            var response = await _httpClient.GetAsync("/api/users/" + user.Id);
+            var paramJson = JsonConvert.SerializeObject(user);
+            var paramContent = new StringContent(paramJson, Encoding.UTF8, @"application/json");
+            var response = await _httpClient.PostAsync("/api/users/login", paramContent);
             if(response.IsSuccessStatusCode)
             {
                 var jsonString = await response.Content.ReadAsStringAsync();
-                var userResponse = JsonConvert.DeserializeObject<CommonResponse<UserResponse>>(jsonString);
-                return userResponse.Data;
+                var deserializedResponse = ServiceResponseHelper.DeserializeObject<UserResponse>(jsonString);
+                return deserializedResponse.Data;
             }
             else
             {
