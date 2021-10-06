@@ -27,6 +27,7 @@ namespace DaprSample.MicroService.UsersService.Services
         // Userレコードを1件取得
         public async Task<User> GetUserById(long id)
         {
+            System.Console.WriteLine("GetUserById:" + id);
             using var mysqlConnection = new MySqlConnection(_configuration.GetConnectionString("UserContext"));
             await mysqlConnection.OpenAsync();
  

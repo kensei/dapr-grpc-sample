@@ -14,6 +14,22 @@ dotnet ef migrations add CreateUser --startup-project ../api/
 dotnet ef database update --startup-project ../api/
 ```
 
+## run
+
+* api exec
+
+```
+cd api
+dapr run --app-id api --app-port 5000 --dapr-grpc-port 50001 --placement-host-address dapr-placement:50010 --components-path ../dapr/components --log-level info -- dotnet run
+```
+
+* service exec
+
+```
+cd userservice
+dapr run --app-id userservice --app-port 5001 --dapr-grpc-port 50002 --placement-host-address dapr-placement:50010 --components-path ../dapr/components --log-level info -- dotnet run
+```
+
 ## useage
 
 * user create

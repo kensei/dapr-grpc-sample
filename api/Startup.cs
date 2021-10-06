@@ -46,7 +46,7 @@ namespace DaprSample.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "api", Version = "v1" });
             });
-            services.AddScoped<UserService>(_ => new UserService(DaprClient.CreateInvokeHttpClient("userservice")));
+            services.AddScoped<UserService>(_ => new UserService(new DaprClientBuilder().Build()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

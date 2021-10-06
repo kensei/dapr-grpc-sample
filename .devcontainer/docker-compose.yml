@@ -6,40 +6,19 @@ services:
       dockerfile: Dockerfile
       args:
         VARIANT: "5.0"
+    environment:
+      DAPR_NETWORK: dapr-sample
     depends_on:
       - redis
-    networks:
-      - dapr-sample
-  
-  api-dapr:
-    image: "daprio/daprd:edge"
-    command: ["./daprd",
-     "-app-id", "api",
-     "-app-port", "5000",
-     "-placement-host-address", "placement:50010",
-     "-components-path", "/components"]
-    volumes:
-      - "./dapr-components/:/components"
-    network_mode: "service:dotnet-app"
-  
-  userservice-dapr:
-    image: "daprio/daprd:edge"
-    command: ["./daprd",
-     "-app-id", "userservice",
-     "-app-port", "5001",
-     "-placement-host-address", "placement:50010",
-     "-components-path", "/components"]
-    volumes:
-      - "./dapr-components/:/components"
-    network_mode: "service:dotnet-app"
-
-  placement:
-    image: "daprio/dapr"
-    command: ["./placement", "-port", "50010"]
+      - dapr-placement
     ports:
-      - "50010:50010"
-    networks:
-      - dapr-sample
+      - 5000:5000
+      - 5001:5001
+    volumes:
+      - /var/run/docker.sock:/var/run/docker-host.sock
+      - "./dapr/:/workspace/dapr"
+    entrypoint: /usr/local/share/docker-init.sh
+    command: sleep infinity
 
   mysql:
     image: mysql:8.0
@@ -56,8 +35,6 @@ services:
       - TZ=Asia/Tokyo
     ports:
       - 3306:3306
-    networks:
-      - dapr-sample
 
   redis:
     image: redis:latest
@@ -66,10 +43,15 @@ services:
     ports:
       - 6379:6379
     command: ["redis-server"]
-    networks:
-      - dapr-sample
+
+  dapr-placement:
+    image: "daprio/dapr"
+    command: ["./placement", "-port", "50010", "--log-level", "debug"]
+    ports:
+      - "50010:50010"
 
 volumes:
   db-store:
 networks:
-    dapr-sample:
+  default:
+    name: dapr-sample

@@ -11,12 +11,13 @@ namespace DaprSample.Api.Helpers
             System.Console.WriteLine("result:" + json);
             try {
                 var deserializedResponse = JsonConvert.DeserializeObject<CommonResponse<T>>(json);
-                System.Console.WriteLine("errorcode:" + deserializedResponse.ErrorCode);
                 return deserializedResponse;
             } catch (JsonException e) {
                 try {
                     var errorResponse = JsonConvert.DeserializeObject<CommonResponse<string>>(json);
-                    throw new ServiceCallFailException(e.Message);
+                    System.Console.WriteLine("errorcode:" + errorResponse.ErrorCode);
+                    System.Console.WriteLine("errorcode:" + errorResponse.Data);
+                    throw new ServiceCallFailException($"{errorResponse.ErrorCode} : {errorResponse.Data}");
                 } catch (JsonException) {
                     throw new ServiceCallFailException(e.Message);
                 }

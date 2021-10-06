@@ -1,71 +1,98 @@
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using DaprSample.Api.Datas.Dto;
 using DaprSample.Api.Configs.Exceptions;
 using DaprSample.Shared.Models;
+using DaprSample.Api.Datas.Enums;
 using DaprSample.Api.Helpers;
+using Dapr.Client;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace DaprSample.Api.Services
 {
     public class UserService
     {
-        private HttpClient _httpClient;
+        private DaprClient _daprClient;
 
-        public UserService(HttpClient httpClient) 
+        public UserService(DaprClient httpClient) 
         {
-            _httpClient = httpClient;
+            _daprClient = httpClient;
         }
  
         // Userレコードを1件取得
         public async Task<User> GetUserById(long id)
         {
-            var response = await _httpClient.GetAsync("/api/users/" + id);
-            if(response.IsSuccessStatusCode)
-            {
-                var jsonString = await response.Content.ReadAsStringAsync();
-                var deserializedResponse = ServiceResponseHelper.DeserializeObject<User>(jsonString);
-                return deserializedResponse.Data;
+            try {
+                var request = _daprClient.CreateInvokeMethodRequest(EnumServiceName.UserService.ToString().ToLower(), "/api/users/" + id);
+                request.Method = HttpMethod.Get;
+                var response = await _daprClient.InvokeMethodWithResponseAsync(request);
+                if(response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    var deserializedResponse = ServiceResponseHelper.DeserializeObject<User>(jsonString);
+                    return deserializedResponse.Data;
+                }
+                else
+                {
+                    throw new ServiceCallFailException("response is not success.");
+                }
             }
-            else
+            catch (InvocationException e)
             {
-                throw new ServiceCallFailException();
+                System.Console.WriteLine(e.Message);
+                System.Console.WriteLine(e.StackTrace);
+                throw new ServiceCallFailException(e.Message);
             }
         }
  
         // Userレコードを1件作成
         public async Task<User> AddUser(User user)
         {
-            var paramJson = JsonConvert.SerializeObject(user);
-            var paramContent = new StringContent(paramJson, Encoding.UTF8, @"application/json");
-            var response = await _httpClient.PostAsync("/api/users/", paramContent);
-            if(response.IsSuccessStatusCode)
+            try {
+                var request = _daprClient.CreateInvokeMethodRequest(EnumServiceName.UserService.ToString().ToLower(), "/api/users/");
+                request.Method = HttpMethod.Post;
+                var paramJson = JsonConvert.SerializeObject(user);
+                request.Content = new StringContent(paramJson, Encoding.UTF8, @"application/json");
+                var response = await _daprClient.InvokeMethodWithResponseAsync(request);
+                if(response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    var deserializedResponse = ServiceResponseHelper.DeserializeObject<User>(jsonString);
+                    return deserializedResponse.Data;
+                }
+                else
+                {
+                    throw new ServiceCallFailException("response is not success.");
+                }
+            } catch (InvocationException e)
             {
-                var jsonString = await response.Content.ReadAsStringAsync();
-                var deserializedResponse = ServiceResponseHelper.DeserializeObject<User>(jsonString);
-                return deserializedResponse.Data;
-            }
-            else
-            {
-                throw new ServiceCallFailException();
+                throw new ServiceCallFailException(e.Message);
             }
         }
 
         public async Task<UserResponse> Login(User user)
         {
-            var paramJson = JsonConvert.SerializeObject(user);
-            var paramContent = new StringContent(paramJson, Encoding.UTF8, @"application/json");
-            var response = await _httpClient.PostAsync("/api/users/login", paramContent);
-            if(response.IsSuccessStatusCode)
+            try {
+                var request = _daprClient.CreateInvokeMethodRequest(EnumServiceName.UserService.ToString().ToLower(), "/api/users/login");
+                request.Method = HttpMethod.Post;
+                var paramJson = JsonConvert.SerializeObject(user);
+                request.Content = new StringContent(paramJson, Encoding.UTF8, @"application/json");
+                var response = await _daprClient.InvokeMethodWithResponseAsync(request);
+                if(response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    var deserializedResponse = ServiceResponseHelper.DeserializeObject<UserResponse>(jsonString);
+                    return deserializedResponse.Data;
+                }
+                else
+                {
+                    throw new ServiceCallFailException("response is not success.");
+                }
+            } catch (InvocationException e)
             {
-                var jsonString = await response.Content.ReadAsStringAsync();
-                var deserializedResponse = ServiceResponseHelper.DeserializeObject<UserResponse>(jsonString);
-                return deserializedResponse.Data;
-            }
-            else
-            {
-                throw new ServiceCallFailException();
+                throw new ServiceCallFailException(e.Message);
             }
         }
     }
