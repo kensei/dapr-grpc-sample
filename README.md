@@ -6,6 +6,12 @@
 * dapr
 * Quartz.NET
 
+## setup
+
+```
+dotnet tool install -g dotnet-grpc
+```
+
 ## migration
 
 ```

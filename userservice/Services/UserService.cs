@@ -6,8 +6,8 @@ using Dapper;
 using StackExchange.Redis;
 using Dapr.Client;
 using DaprSample.Shared.Models;
-using DaprSample.MicroService.UsersService.Configs.Exceptions;
 using DaprSample.MicroService.UsersService.Datas.Dto;
+using DaprSample.Shared.Configs.Exceptions;
 
 namespace DaprSample.MicroService.UsersService.Services
 {

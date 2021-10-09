@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "shared", "shared\shared.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "userservice", "userservice\userservice.csproj", "{BAF143A1-35E9-48E9-AAC3-C1C2A0D62917}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "userservice2", "userservice2\userservice2.csproj", "{176F600C-260E-4D27-80B0-8D6C6B125614}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,5 +60,17 @@ Global
 		{BAF143A1-35E9-48E9-AAC3-C1C2A0D62917}.Release|x64.Build.0 = Release|Any CPU
 		{BAF143A1-35E9-48E9-AAC3-C1C2A0D62917}.Release|x86.ActiveCfg = Release|Any CPU
 		{BAF143A1-35E9-48E9-AAC3-C1C2A0D62917}.Release|x86.Build.0 = Release|Any CPU
+		{176F600C-260E-4D27-80B0-8D6C6B125614}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{176F600C-260E-4D27-80B0-8D6C6B125614}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{176F600C-260E-4D27-80B0-8D6C6B125614}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{176F600C-260E-4D27-80B0-8D6C6B125614}.Debug|x64.Build.0 = Debug|Any CPU
+		{176F600C-260E-4D27-80B0-8D6C6B125614}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{176F600C-260E-4D27-80B0-8D6C6B125614}.Debug|x86.Build.0 = Debug|Any CPU
+		{176F600C-260E-4D27-80B0-8D6C6B125614}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{176F600C-260E-4D27-80B0-8D6C6B125614}.Release|Any CPU.Build.0 = Release|Any CPU
+		{176F600C-260E-4D27-80B0-8D6C6B125614}.Release|x64.ActiveCfg = Release|Any CPU
+		{176F600C-260E-4D27-80B0-8D6C6B125614}.Release|x64.Build.0 = Release|Any CPU
+		{176F600C-260E-4D27-80B0-8D6C6B125614}.Release|x86.ActiveCfg = Release|Any CPU
+		{176F600C-260E-4D27-80B0-8D6C6B125614}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

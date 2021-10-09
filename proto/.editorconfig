@@ -1,0 +1,22 @@
+root = true
+ 
+[*]
+indent_style = space
+indent_size = 4
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = false
+insert_final_newline = false
+ 
+; Markdown - match markdownlint settings
+[*.{md,markdown}]
+indent_size = 2
+ 
+# Shell script files
+[*.sh]
+end_of_line = lf
+indent_size = 2
+ 
+[*.proto]
+end_of_line = lf
+indent_size = 2

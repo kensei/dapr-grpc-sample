@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+option csharp_namespace = "DaprSample.MicroService.UsersService2.Proto";
+
+message User {
+    uint64 id = 1;
+    string name = 2;
+}

@@ -1,6 +1,6 @@
 using System;
 
-namespace DaprSample.MicroService.UsersService.Configs.Exceptions
+namespace DaprSample.Shared.Configs.Exceptions
 {
     public class ResourceNotFoundException : Exception {
         public ResourceNotFoundException()

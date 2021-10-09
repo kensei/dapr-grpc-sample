@@ -4,9 +4,9 @@ using DaprSample.Shared.Models;
 using System;
 using DaprSample.MicroService.UsersService.Helpers;
 using DaprSample.MicroService.UsersService.Datas.Enums;
-using DaprSample.MicroService.UsersService.Configs.Exceptions;
 using DaprSample.MicroService.UsersService.Datas.Dto;
 using DaprSample.MicroService.UsersService.Services;
+using DaprSample.Shared.Configs.Exceptions;
 
 namespace DaprSample.MicroService.UsersService.Controllers
 {
