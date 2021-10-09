@@ -4,8 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Protobuf Include="../proto/messages/User.proto" />
-    <Protobuf Include="../proto/users/Users.proto" GrpcServices="Server" ProtoRoot="../proto" />
-    <Protobuf Include="Protos/greet.proto" GrpcServices="Server" />
+    <Protobuf Include="../proto/users/Users.proto" GrpcServices="Both" ProtoRoot="../proto" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.90" />

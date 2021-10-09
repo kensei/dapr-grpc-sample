@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "userservice", "userservice\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "userservice2", "userservice2\userservice2.csproj", "{176F600C-260E-4D27-80B0-8D6C6B125614}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "userservice2.Test", "userservice2.Test\userservice2.Test.csproj", "{06A6AC58-6B1E-4E5E-BDFA-EF948AAAB635}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,5 +74,17 @@ Global
 		{176F600C-260E-4D27-80B0-8D6C6B125614}.Release|x64.Build.0 = Release|Any CPU
 		{176F600C-260E-4D27-80B0-8D6C6B125614}.Release|x86.ActiveCfg = Release|Any CPU
 		{176F600C-260E-4D27-80B0-8D6C6B125614}.Release|x86.Build.0 = Release|Any CPU
+		{06A6AC58-6B1E-4E5E-BDFA-EF948AAAB635}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06A6AC58-6B1E-4E5E-BDFA-EF948AAAB635}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06A6AC58-6B1E-4E5E-BDFA-EF948AAAB635}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{06A6AC58-6B1E-4E5E-BDFA-EF948AAAB635}.Debug|x64.Build.0 = Debug|Any CPU
+		{06A6AC58-6B1E-4E5E-BDFA-EF948AAAB635}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{06A6AC58-6B1E-4E5E-BDFA-EF948AAAB635}.Debug|x86.Build.0 = Debug|Any CPU
+		{06A6AC58-6B1E-4E5E-BDFA-EF948AAAB635}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06A6AC58-6B1E-4E5E-BDFA-EF948AAAB635}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06A6AC58-6B1E-4E5E-BDFA-EF948AAAB635}.Release|x64.ActiveCfg = Release|Any CPU
+		{06A6AC58-6B1E-4E5E-BDFA-EF948AAAB635}.Release|x64.Build.0 = Release|Any CPU
+		{06A6AC58-6B1E-4E5E-BDFA-EF948AAAB635}.Release|x86.ActiveCfg = Release|Any CPU
+		{06A6AC58-6B1E-4E5E-BDFA-EF948AAAB635}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

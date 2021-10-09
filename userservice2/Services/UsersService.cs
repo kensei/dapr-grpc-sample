@@ -42,7 +42,7 @@ namespace DaprSample.MicroService.UsersService2.Services
 
             return Task.FromResult(new GetUserByIdResponse
             {
-                User = new User(),
+                User = user,
             });
         }
     }
