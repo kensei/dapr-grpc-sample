@@ -16,7 +16,6 @@ services:
       - 5001:5001
     volumes:
       - /var/run/docker.sock:/var/run/docker-host.sock
-      - "./dapr/:/workspace/dapr"
     entrypoint: /usr/local/share/docker-init.sh
     command: sleep infinity
 

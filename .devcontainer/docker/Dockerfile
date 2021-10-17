@@ -15,17 +15,27 @@ ARG USERNAME=vscode
 
 # Install needed packages and setup non-root user. Use a separate RUN statement to add your
 # own dependencies. A user of "automatic" attempts to reuse an user ID if one already exists.
+WORKDIR /home/$USERNAME
 COPY library-scripts/docker-debian.sh /tmp/library-scripts/
 RUN apt-get update \
     # Use Docker script from script library to set things up
-    && /bin/bash /tmp/library-scripts/docker-debian.sh "${ENABLE_NONROOT_DOCKER}" "/var/run/docker-host.sock" "/var/run/docker.sock" "${USERNAME}" \
-    # Install Dapr
-    && wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash \
-    # Clean up
-    && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
-
+    && /bin/bash /tmp/library-scripts/docker-debian.sh "${ENABLE_NONROOT_DOCKER}" "/var/run/docker-host.sock" "/var/run/docker.sock" "${USERNAME}"
+# Install dapr cli
+ADD https://raw.githubusercontent.com/dapr/cli/master/install/install.sh ./
+RUN sudo chmod g+x install.sh
+RUN su $USERNAME
+RUN /bin/bash install.sh
+# clean up
+RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
+# dapr setup
+RUN sudo -u $USERNAME mkdir -p /home/$USERNAME/.dapr/components/
+COPY dapr/components/* /home/$USERNAME/.dapr/components/
 # Add daprd to the path for the VS Code Dapr extension.
 ENV PATH "$PATH:/home/${USERNAME}/.dapr/bin"
+# dapr initialize
+RUN sudo -u $USERNAME dapr uninstall && sudo -u $USERNAME dapr init --slim
+
+
 
 # Setting the ENTRYPOINT to docker-init.sh will configure non-root access
 # to the Docker socket. The script will also execute CMD as needed.
