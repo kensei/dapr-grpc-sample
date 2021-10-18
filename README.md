@@ -26,14 +26,21 @@ dotnet ef database update --startup-project ../api/
 
 ```
 cd api
-dapr run --app-id api --app-port 5000 --dapr-grpc-port 50001 --placement-host-address dapr-placement:50010 --components-path ../dapr/components --log-level info -- dotnet run
+dapr run --app-id api --app-port 5000 --placement-host-address dapr-placement:50010 --components-path $HOME/.dapr/components --log-level info -- dotnet run
 ```
 
-* service exec
+* http service exec
 
 ```
 cd userservice
-dapr run --app-id userservice --app-port 5001 --dapr-grpc-port 50002 --placement-host-address dapr-placement:50010 --components-path ../dapr/components --log-level info -- dotnet run
+dapr run --app-id userservice --app-port 5001 --placement-host-address dapr-placement:50010 --components-path $HOME/.dapr/components --log-level info -- dotnet run
+```
+
+* grpc service exec
+
+```
+cd userservice2
+dapr run --app-id userservice2 --app-port 5002 --app-protocol grpc --placement-host-address dapr-placement:50010 --components-path $HOME/.dapr/components --log-level info -- dotnet run
 ```
 
 ## useage
@@ -41,17 +48,51 @@ dapr run --app-id userservice --app-port 5001 --dapr-grpc-port 50002 --placement
 * user create
 
 ```
-curl http://localhost:5000/api/users -X POST -H "Content-Type: application/json" -d '{"name":"hoge"}'
+curl http://localhost:5000/api/v1.0/users -X POST -H "Content-Type: application/json" -d '{"name":"hoge"}'
 ```
 
 * user get
 
 ```
-curl http://localhost:5000/api/users/1
+curl http://localhost:5000/api/v1.0/users/1
 ```
 
 * user login
 
 ```
-curl http://localhost:5000/api/users/login -X POST -H "Content-Type: application/json" -d '{"id":1}'
+curl http://localhost:5000/api/v1.0/users/login -X POST -H "Content-Type: application/json" -d '{"id":1}'
+```
+
+## dapr command
+
+* list services
+
+```
+dapr list
+```
+
+## grpcurl
+
+* setup
+
+```
+go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
+```
+
+* list
+
+```
+grpcurl -import-path ./proto -proto ./proto/services/UserService.proto localhost:42559 list
+```
+
+* descrive
+
+```
+grpcurl -import-path ./proto -proto ./proto/services/UserService.proto localhost:42559 describe daprsample.UserService
+```
+
+* execute with dapr
+
+```
+grpcurl -plaintext -import-path ./proto -proto ./proto/services/UserService.proto -d '{"Id": 1}' -rpc-header 'dapr-app-id: userservice2' localhost:5002 daprsample.UserService.GetUserById
 ```

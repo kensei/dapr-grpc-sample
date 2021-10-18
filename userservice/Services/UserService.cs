@@ -27,7 +27,7 @@ namespace DaprSample.MicroService.UsersService.Services
         // Userレコードを1件取得
         public async Task<User> GetUserById(long id)
         {
-            System.Console.WriteLine("GetUserById:" + id);
+            System.Console.WriteLine("UserService-GetUserById:" + id);
             using var mysqlConnection = new MySqlConnection(_configuration.GetConnectionString("UserContext"));
             await mysqlConnection.OpenAsync();
  
@@ -47,6 +47,7 @@ namespace DaprSample.MicroService.UsersService.Services
         // Userレコードを1件作成
         public async Task<User> AddUser(User user)
         {
+            System.Console.WriteLine("UserService-AddUser:" + user.Id);
             using var mysqlConnection = new MySqlConnection(_configuration.GetConnectionString("UserContext"));
             await mysqlConnection.OpenAsync();
  
@@ -74,6 +75,7 @@ namespace DaprSample.MicroService.UsersService.Services
 
         public async Task<UserResponse> Login(User user)
         {
+            System.Console.WriteLine("UserService-Login:" + user.Id);
             using var mysqlConnection = new MySqlConnection(_configuration.GetConnectionString("UserContext"));
             await mysqlConnection.OpenAsync();
             using var transaction = await mysqlConnection.BeginTransactionAsync();

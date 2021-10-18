@@ -10,14 +10,14 @@ using DaprSample.Shared.Models;
 
 namespace DaprSample.Api.Controllers
 {
-    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [Route("api/v{version:apiVersion}/users")]
     [ApiController]
-    public class UsersController
+    public class UserssController
     {
-        private UserService _service;
+        private User2Service _service;
  
-        public UsersController(UserService service)
+        public UserssController(User2Service service)
         {
             _service = service;
         }
@@ -34,8 +34,14 @@ namespace DaprSample.Api.Controllers
             {
                 return ResponseHelper.GenerateResponse<string>(e.Message, EnumResponseStatus.NotFound);
             }
+            catch(ServiceCallFailException e)
+            {
+                Console.WriteLine(e.Message);
+                return ResponseHelper.GenerateResponse<string>(e.Message, EnumResponseStatus.Fail);
+            }
             catch(Exception e)
             {
+                Console.WriteLine(e.GetType());
                 Console.WriteLine(e.Message);
                 return ResponseHelper.GenerateResponse<string>(e.Message, EnumResponseStatus.Fail);
             }
@@ -49,8 +55,14 @@ namespace DaprSample.Api.Controllers
                 var addedUser = await _service.AddUser(user);
                 return ResponseHelper.GenerateResponse<User>(addedUser, EnumResponseStatus.Success);               
             }
+            catch(ServiceCallFailException e)
+            {
+                Console.WriteLine(e.Message);
+                return ResponseHelper.GenerateResponse<string>(e.Message, EnumResponseStatus.Fail);
+            }
             catch(Exception e) 
             {
+                Console.WriteLine(e.GetType());
                 Console.WriteLine(e.Message);
                 return ResponseHelper.GenerateResponse<string>(e.Message, EnumResponseStatus.Fail);
             }
@@ -64,12 +76,18 @@ namespace DaprSample.Api.Controllers
                 var loginUser = await _service.Login(user);
                 return ResponseHelper.GenerateResponse<UserResponse>(loginUser, EnumResponseStatus.Success);
             }
+            catch(ServiceCallFailException e)
+            {
+                Console.WriteLine(e.Message);
+                return ResponseHelper.GenerateResponse<string>(e.Message, EnumResponseStatus.Fail);
+            }
             catch(ResourceNotFoundException e)
             {
                 return ResponseHelper.GenerateResponse<string>(e.Message, EnumResponseStatus.NotFound);
             }
             catch(Exception e)
             {
+                Console.WriteLine(e.GetType());
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.InnerException.Message);
                 return ResponseHelper.GenerateResponse<string>(e.Message, EnumResponseStatus.Fail);

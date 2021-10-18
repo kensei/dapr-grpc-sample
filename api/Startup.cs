@@ -42,11 +42,14 @@ namespace DaprSample.Api
                     .EnableDetailedErrors() // remove for production
                 );
             services.AddControllers().AddDapr();
+            services.AddApiVersioning();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "api", Version = "v1" });
             });
-            services.AddScoped<UserService>(_ => new UserService(new DaprClientBuilder().Build()));
+            services.AddSingleton<DaprClient>(_ => new DaprClientBuilder().Build());
+            services.AddScoped<UserService>();
+            services.AddScoped<User2Service>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

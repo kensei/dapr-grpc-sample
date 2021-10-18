@@ -1,9 +1,7 @@
 using System.Net.Http;
 using Grpc.Net.Client;
-using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
-using DaprSample.MicroService.UsersService2.Proto;
-using System.Threading.Tasks;
+using DaprSample.MicroService.Proto.Serivces;
 
 namespace DaprSample.MicroService.UsersService2.Tests
 {
@@ -33,7 +31,7 @@ namespace DaprSample.MicroService.UsersService2.Tests
             {
                 HttpClient = _httpClient
             });
-            var client = new Users.UsersClient(channel);
+            var client = new UserService.UserServiceClient(channel);
             
             GetUserByIdResponse response = null;
             var requestParam = new GetUserByIdRequest

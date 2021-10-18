@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package daprsample;
+option csharp_namespace = "DaprSample.MicroService.Proto.Serivces";
+
+import "messages/User.proto";
+
+message GetUserByIdRequest {
+    uint64 Id = 1;
+}
+
+message GetUserByIdResponse {
+    daprsample.User User = 1;
+}
+
+message AddUserRequest {
+    daprsample.User User = 1;
+}
+
+message AddUserResponse {
+    daprsample.User User = 1;
+}
+
+message LoginRequest {
+    daprsample.User User = 1;
+}
+
+message LoginResponse {
+    uint32 LoginCounter = 1;
+}

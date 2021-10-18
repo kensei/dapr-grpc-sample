@@ -12,6 +12,8 @@ ARG ENABLE_NONROOT_DOCKER="true"
 ARG USE_MOBY="true"
 
 ARG USERNAME=vscode
+ARG GO_VERSION="1.17.2"
+ARG GO_ARCH="amd64"
 
 # Install needed packages and setup non-root user. Use a separate RUN statement to add your
 # own dependencies. A user of "automatic" attempts to reuse an user ID if one already exists.
@@ -35,7 +37,11 @@ ENV PATH "$PATH:/home/${USERNAME}/.dapr/bin"
 # dapr initialize
 RUN sudo -u $USERNAME dapr uninstall && sudo -u $USERNAME dapr init --slim
 
-
+# install grpcurl
+ADD "https://golang.org/dl/go${GO_VERSION}.linux-${GO_ARCH}.tar.gz" /go.tgz
+RUN tar -C /usr/local/ -xzf /go.tgz
+ENV PATH "/usr/local/go/bin:$PATH"
+ENV PATH "/home/${USERNAME}/go/bin:$PATH"
 
 # Setting the ENTRYPOINT to docker-init.sh will configure non-root access
 # to the Docker socket. The script will also execute CMD as needed.

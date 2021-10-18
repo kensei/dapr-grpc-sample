@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using StackExchange.Redis;
 using DaprSample.MicroService.UsersService2.Services;
 using DaprSample.Shared.Models;
+using Microsoft.Extensions.Logging;
 
 namespace DaprSample.MicroService.UsersService2
 {
@@ -48,6 +49,9 @@ namespace DaprSample.MicroService.UsersService2
             services.AddSingleton<IDatabase>(redisDadabase);
             services.AddControllers().AddDapr();
             services.AddGrpc();
+            services.AddGrpcReflection();
+
+            services.AddScoped<UserServiceImpl>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,7 +66,12 @@ namespace DaprSample.MicroService.UsersService2
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<UsersService>();
+                endpoints.MapGrpcService<UserService>();
+
+                if (env.IsDevelopment())
+                {
+                    endpoints.MapGrpcReflectionService();
+                }
 
                 endpoints.MapGet("/", async context =>
                 {
