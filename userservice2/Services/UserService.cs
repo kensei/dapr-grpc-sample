@@ -30,12 +30,19 @@ namespace DaprSample.MicroService.UsersService2.Services
             switch (request.Method)
             {
                 case "GetUserById":                
-                    var input = request.Data.Unpack<GetUserByIdRequest>();
-                    var output = await _serviceImpl.GetUserById(input, context);
-                    response.Data = Any.Pack(output);
+                    var getUserByIdRequest = request.Data.Unpack<GetUserByIdRequest>();
+                    var getUserByIdResponse = await _serviceImpl.GetUserById(getUserByIdRequest, context);
+                    response.Data = Any.Pack(getUserByIdResponse);
                     break;
                 case "AddUser":
+                    var addUserRequest = request.Data.Unpack<AddUserRequest>();
+                    var addUserResponse = await _serviceImpl.AddUser(addUserRequest, context);
+                    response.Data = Any.Pack(addUserResponse);
+                    break;
                 case "Login":
+                    var loginRequest = request.Data.Unpack<LoginRequest>();
+                    var loginResponse = await _serviceImpl.Login(loginRequest, context);
+                    response.Data = Any.Pack(loginResponse);
                     break;
                 default:
                     break;
