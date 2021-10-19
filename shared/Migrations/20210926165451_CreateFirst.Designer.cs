@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace shared.Migrations
 {
-    [DbContext(typeof(TestContext))]
+    [DbContext(typeof(TestDbContext))]
     [Migration("20210926165451_CreateFirst")]
     partial class CreateFirst
     {

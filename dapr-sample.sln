@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "userservice2", "userservice
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "userservice2.Test", "userservice2.Test\userservice2.Test.csproj", "{06A6AC58-6B1E-4E5E-BDFA-EF948AAAB635}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api.Test", "api.Test\api.Test.csproj", "{29C3491A-97E2-4AAE-A72B-C593B366503B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,5 +88,17 @@ Global
 		{06A6AC58-6B1E-4E5E-BDFA-EF948AAAB635}.Release|x64.Build.0 = Release|Any CPU
 		{06A6AC58-6B1E-4E5E-BDFA-EF948AAAB635}.Release|x86.ActiveCfg = Release|Any CPU
 		{06A6AC58-6B1E-4E5E-BDFA-EF948AAAB635}.Release|x86.Build.0 = Release|Any CPU
+		{29C3491A-97E2-4AAE-A72B-C593B366503B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29C3491A-97E2-4AAE-A72B-C593B366503B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29C3491A-97E2-4AAE-A72B-C593B366503B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{29C3491A-97E2-4AAE-A72B-C593B366503B}.Debug|x64.Build.0 = Debug|Any CPU
+		{29C3491A-97E2-4AAE-A72B-C593B366503B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{29C3491A-97E2-4AAE-A72B-C593B366503B}.Debug|x86.Build.0 = Debug|Any CPU
+		{29C3491A-97E2-4AAE-A72B-C593B366503B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29C3491A-97E2-4AAE-A72B-C593B366503B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29C3491A-97E2-4AAE-A72B-C593B366503B}.Release|x64.ActiveCfg = Release|Any CPU
+		{29C3491A-97E2-4AAE-A72B-C593B366503B}.Release|x64.Build.0 = Release|Any CPU
+		{29C3491A-97E2-4AAE-A72B-C593B366503B}.Release|x86.ActiveCfg = Release|Any CPU
+		{29C3491A-97E2-4AAE-A72B-C593B366503B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

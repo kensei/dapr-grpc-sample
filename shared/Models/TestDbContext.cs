@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DaprSample.Shared.Models
 {
-    public class TestContext : DbContext
+    public class TestDbContext : DbContext
     {
-        public TestContext(DbContextOptions<TestContext> options)
+        public TestDbContext(DbContextOptions<TestDbContext> options)
             : base(options)
         {
         }

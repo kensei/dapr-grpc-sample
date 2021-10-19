@@ -4,7 +4,7 @@ using DaprSample.MicroService.Proto.Serivces;
 
 namespace DaprSample.MicroService.UsersService2.Tests
 {
-    public class UserServiceTest
+    public class UserService2Test
     {
         private UserService2WebApplicationFactory _factory;
         private DaprClient _daprClient;

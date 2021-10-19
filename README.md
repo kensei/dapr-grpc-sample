@@ -4,6 +4,9 @@
 
 * vscode remote container
 * dapr
+* dapper
+* grpc
+* grpc-sdk : copy code(use grpc integration test)
 * Quartz.NET
 
 ## setup
@@ -61,38 +64,4 @@ curl http://localhost:5000/api/v1.0/users/1
 
 ```
 curl http://localhost:5000/api/v1.0/users/login -X POST -H "Content-Type: application/json" -d '{"id":1}'
-```
-
-## dapr command
-
-* list services
-
-```
-dapr list
-```
-
-## grpcurl
-
-* setup
-
-```
-go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
-```
-
-* list
-
-```
-grpcurl -import-path ./proto -proto ./proto/services/UserService.proto localhost:42559 list
-```
-
-* descrive
-
-```
-grpcurl -import-path ./proto -proto ./proto/services/UserService.proto localhost:42559 describe daprsample.UserService
-```
-
-* execute with dapr
-
-```
-grpcurl -plaintext -import-path ./proto -proto ./proto/services/UserService.proto -d '{"Id": 1}' -rpc-header 'dapr-app-id: userservice2' localhost:5002 daprsample.UserService.GetUserById
 ```

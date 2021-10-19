@@ -2,14 +2,14 @@ using System;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
-using Dapr;
-using Dapr.Client;
-using Grpc.Net.Client;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Dapr;
+using Dapr.Client;
+using Grpc.Net.Client;
 using MySql.Data.MySqlClient;
 using DaprSample.MicroService.UsersService2.Services;
 using DaprSample.Shared.Models;
@@ -32,11 +32,11 @@ namespace DaprSample.MicroService.UsersService2.Tests
                     .Build();
                 var connectionString = config.GetConnectionString("UserContext");
  
-                var descriptor = services.SingleOrDefault( d => d.ServiceType == typeof(DbContextOptions<TestContext>));
+                var descriptor = services.SingleOrDefault( d => d.ServiceType == typeof(DbContextOptions<TestDbContext>));
                 services.Remove(descriptor);
  
                 var serverVersion = new MySqlServerVersion(new Version(8, 0, 21));
-                services.AddDbContext<TestContext>(
+                services.AddDbContext<TestDbContext>(
                 options => options
                     .UseMySql(connectionString, serverVersion)
                     .EnableSensitiveDataLogging()
@@ -52,7 +52,7 @@ namespace DaprSample.MicroService.UsersService2.Tests
  
                 var sp = services.BuildServiceProvider(); 
                 using var scope = sp.CreateScope();
-                var db = scope.ServiceProvider.GetRequiredService<TestContext>();
+                var db = scope.ServiceProvider.GetRequiredService<TestDbContext>();
 
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
@@ -61,7 +61,7 @@ namespace DaprSample.MicroService.UsersService2.Tests
             });
         }
 
-        private void CreateTestUser(TestContext context)
+        private void CreateTestUser(TestDbContext context)
         {
             var user = new User
             {

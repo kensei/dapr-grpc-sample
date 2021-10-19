@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace shared.Migrations
 {
-    [DbContext(typeof(TestContext))]
+    [DbContext(typeof(TestDbContext))]
     partial class TestContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

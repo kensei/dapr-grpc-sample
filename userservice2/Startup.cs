@@ -27,7 +27,7 @@ namespace DaprSample.MicroService.UsersService2
         public void ConfigureServices(IServiceCollection services)
         {
             var serverVersion = new MySqlServerVersion(new Version(8, 0, 21));
-            services.AddDbContext<TestContext>(
+            services.AddDbContext<TestDbContext>(
                 options => options
                     .UseMySql(
                         Configuration.GetConnectionString("UserContext"), 
