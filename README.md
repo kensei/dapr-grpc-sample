@@ -1,5 +1,11 @@
 # dapr sample with quarts
 
+## description
+
+* grpc microservice
+* grpc microservice integratin test
+* call grpc microservice integration dest
+
 ## used env and library
 
 * vscode remote container
@@ -8,7 +14,6 @@
 * grpc
 * grpc-sdk : copy code(use grpc integration test)
 * moq
-* Quartz.NET
 
 ## setup
 
@@ -52,17 +57,20 @@ dapr run --app-id userservice2 --app-port 5002 --app-protocol grpc --placement-h
 * user create
 
 ```
-curl http://localhost:5000/api/v1.0/users -X POST -H "Content-Type: application/json" -d '{"name":"hoge"}'
+curl http://localhost:5000/api/v1.0/users -X POST -H "Content-Type: application/json" -d '{"name":"hoge"}' // http micro service
+curl http://localhost:5000/api/v1.0/users -X POST -H "Content-Type: application/json" -d '{"name":"hoge"}' // grpc micro service
 ```
 
 * user get
 
 ```
-curl http://localhost:5000/api/v1.0/users/1
+curl http://localhost:5000/api/v1.0/users/1 // http micro service
+curl http://localhost:5000/api/v2.0/users/1 // grpc micro service
 ```
 
 * user login
 
 ```
-curl http://localhost:5000/api/v1.0/users/login -X POST -H "Content-Type: application/json" -d '{"id":1}'
+curl http://localhost:5000/api/v1.0/users/login -X POST -H "Content-Type: application/json" -d '{"id":1}' // http micro service
+curl http://localhost:5000/api/v1.0/users/login -X POST -H "Content-Type: application/json" -d '{"id":1}' // grpc micro service
 ```
